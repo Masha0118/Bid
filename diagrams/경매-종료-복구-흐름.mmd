@@ -1,0 +1,13 @@
+flowchart TD
+    Trigger["종료 메시지 또는 만료 경매 재탐색"] --> Lock{"경매별 종료 잠금"}
+    Lock -->|"획득 실패"| Skip["다른 종료 작업에 맡김"]
+    Lock -->|"획득"| Done{"완료 결과 존재?"}
+    Done -->|"예"| Cleanup["남은 런타임 상태 정리"]
+    Done -->|"아니오"| Winner["최종 입찰자·금액 확인"]
+    Winner --> Main["Main API에 낙찰·유찰 결과 전달"]
+    Main -->|"실패"| Keep["런타임 상태 유지\n재처리 가능"]
+    Main -->|"성공"| Persist["거래·결과 요약·입찰 기록 반영"]
+    Persist --> Publish["완료 상태 전파"]
+    Publish --> Cleanup
+    Restore["서버 시작 시 영속 백업 확인"] -.-> Trigger
+
