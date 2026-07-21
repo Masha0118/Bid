@@ -9,6 +9,7 @@ flowchart TB
     Redis[("Redis + Lua\n런타임 상태")]
     Rabbit["RabbitMQ\n시작·종료 예약"]
     Kafka["Kafka\n입찰 감사 이벤트"]
+    Audit["Audit Consumer\n논리적 소비 역할"]
 
     App -->|"일반 서비스 요청"| Main
     Main --> DB
@@ -18,10 +19,11 @@ flowchart TB
     Main -->|"시작·종료 예약 작업"| Rabbit
     Rabbit --> Auction
     Auction -->|"입찰 감사 이벤트"| Kafka
-    Kafka -->|"감사 기록 소비"| Auction
-    Auction --> DB
+    Kafka -->|"감사 기록 소비"| Audit
+    Audit --> DB
     AdminWeb -->|"관리자 요청"| Admin
     Admin --> DB
     Batch -->|"지표·위험 결과"| DB
     Admin -->|"집계 조회·실행"| Batch
 
+    %% Audit Consumer는 처리 책임을 설명하기 위한 논리적 역할이며 별도 서버를 뜻하지 않습니다.

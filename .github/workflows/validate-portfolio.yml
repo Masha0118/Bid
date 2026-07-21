@@ -1,0 +1,39 @@
+name: Validate Portfolio
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: flow-console/package-lock.json
+      - name: Install Flow Console
+        working-directory: flow-console
+        run: npm ci
+      - name: Type check
+        working-directory: flow-console
+        run: npm run type-check
+      - name: Test
+        working-directory: flow-console
+        run: npm run test
+      - name: Build
+        working-directory: flow-console
+        env:
+          VITE_BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+      - name: Check repository safety
+        run: node .github/scripts/validate-repository.mjs
+      - name: Check internal Markdown links
+        run: node .github/scripts/validate-links.mjs
