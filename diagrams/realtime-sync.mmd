@@ -1,0 +1,13 @@
+flowchart TD
+    Enter["참가자 화면 진입"] --> Snapshot["최신 경매 상태 조회"]
+    Snapshot --> Subscribe["경매 상태 구독<br/>WebSocket"]
+    Subscribe --> Event["변경 이벤트 수신"]
+    Event --> Compare{"수신 Version 비교"}
+    Compare -->|"현재 이하"| Ignore["중복·역순 이벤트 무시"]
+    Compare -->|"현재 + 1"| Apply["현재가·최고 입찰자·Version 반영"]
+    Compare -->|"중간 Version 누락"| Reload["최신 전체 상태 재조회"]
+    Reload --> Guard{"응답 Version이 더 최신인가"}
+    Guard -->|"예"| Apply
+    Guard -->|"아니오"| Ignore
+    Apply --> Cards["참가자 상태 카드 갱신"]
+

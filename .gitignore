@@ -1,16 +1,7 @@
-# 공개 포트폴리오에는 문서와 검토 완료된 미디어만 포함합니다.
+# 검토 완료된 문서와 미디어만 포함합니다.
 .DS_Store
 Thumbs.db
 *.log
 *.env
 .env.*
 !.env.example
-
-# 로컬 검토 폴더는 별도 디렉터리이며 공개 저장소에 복사하지 않습니다.
-ourbid-portfolio-review/
-
-# Flow Console 로컬 산출물
-flow-console/node_modules/
-flow-console/dist/
-flow-console/.vite/
-flow-console/coverage/

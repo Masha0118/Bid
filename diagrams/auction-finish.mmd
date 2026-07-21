@@ -1,0 +1,16 @@
+flowchart TD
+    Schedule["예약된 종료 시점"] --> Rabbit["종료 작업 전달<br/>RabbitMQ"]
+    Rabbit --> Lock{"경매별 잠금 획득"}
+    Lock -->|"실패"| Skip["다른 종료 처리에 맡김"]
+    Lock -->|"성공"| Existing{"완료 결과가 이미 있는가"}
+    Existing -->|"예"| Reuse["기존 결과 사용"]
+    Existing -->|"아니오"| Runtime["Redis 최종 상태 조회"]
+    Runtime --> Complete{"종료 판단에 충분한가"}
+    Complete -->|"아니오"| DB["영속 상태 보완 조회<br/>PostgreSQL"]
+    Complete -->|"예"| Decide["낙찰 또는 유찰 결정"]
+    DB --> Decide
+    Decide --> Followup["후속 결과 반영<br/>Main API"]
+    Followup -->|"성공"| Cleanup["런타임 상태 정리"]
+    Followup -->|"실패"| Preserve["재처리를 위해 상태 유지"]
+    Reuse --> Cleanup
+

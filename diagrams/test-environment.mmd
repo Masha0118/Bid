@@ -1,0 +1,12 @@
+flowchart LR
+    Browser["참가자 브라우저<br/>Bid On Web"] --> Pages["정적 웹 배포<br/>Cloudflare Pages"]
+    Pages --> Tunnel["제한된 HTTPS 연결<br/>Cloudflare Tunnel"]
+    Tunnel --> Control["경매 실행 제어"]
+    Control --> Generator["허용된 부하 시나리오<br/>k6"]
+    Control --> Auction["격리된 경매 처리<br/>Auction Server"]
+    Generator --> Auction
+    Auction --> Redis[("테스트 런타임 상태<br/>Redis")]
+    Auction --> Kafka["테스트 입찰 이력<br/>Kafka"]
+    Auction --> WS["테스트 상태 전달<br/>WebSocket"]
+    Control --> Fixture["테스트 경매 준비·정리"]
+    Fixture --> DB[("테스트 영속 데이터<br/>PostgreSQL")]

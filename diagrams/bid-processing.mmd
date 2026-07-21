@@ -1,0 +1,13 @@
+flowchart TD
+    Request["직접 입찰 또는 가상 참가자 요청"] --> Validate["요청 형식과 경매 식별 확인"]
+    Validate --> Lua["입찰 조건 확인과 상태 변경<br/>Redis Lua"]
+    Lua -->|"반영"| Changed["최고가·최고 입찰자·입찰 횟수·Version 변경"]
+    Lua -->|"조건상 미반영"| NotApplied["현재가·최고 입찰자·경매 상태 사유 반환"]
+    Lua -->|"처리 실패"| Error["시스템 오류 또는 응답 시간 초과"]
+    Changed --> WS["참가자 상태 전달<br/>WebSocket"]
+    Changed --> Kafka["입찰 이력 전달<br/>Kafka"]
+    WS --> Result["화면 상태와 실행 결과 갱신"]
+    Kafka --> History["비동기 이력 처리"]
+    NotApplied --> Result
+    Error --> Result
+

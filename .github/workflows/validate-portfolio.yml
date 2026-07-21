@@ -1,4 +1,4 @@
-name: Validate Portfolio
+name: Validate Repository
 
 on:
   pull_request:
@@ -17,23 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: flow-console/package-lock.json
-      - name: Install Flow Console
-        working-directory: flow-console
-        run: npm ci
-      - name: Type check
-        working-directory: flow-console
-        run: npm run type-check
-      - name: Test
-        working-directory: flow-console
-        run: npm run test
-      - name: Build
-        working-directory: flow-console
-        env:
-          VITE_BASE_PATH: /${{ github.event.repository.name }}/
-        run: npm run build
-      - name: Check repository safety
+      - name: Check repository content
         run: node .github/scripts/validate-repository.mjs
-      - name: Check internal Markdown links
+      - name: Check Markdown links
         run: node .github/scripts/validate-links.mjs
