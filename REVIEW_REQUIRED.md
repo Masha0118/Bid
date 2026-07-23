@@ -2,7 +2,7 @@
 
 ## 우선순위 1: 배포
 
-- `https://bid-on-performance-lab.pages.dev/`의 Cloudflare Pages Production 배포 상태를 확인합니다.
+- `https://bidon-performance.duckdns.org/`의 Cloudflare Pages Production 배포 상태를 확인합니다.
 - 현재 화면에서 `실행 비활성화`가 표시되고 서버 상태 확인이 끝나지 않으므로, 체험 백엔드 연결과 HTTPS 요청을 확인합니다.
 - 연결 복구 후 `새 테스트 시작`, 직접 입찰, 가상 입찰과 `고급 성능 보기`를 순서대로 확인합니다.
 - GitHub About의 Website를 위 주소로 설정합니다.
@@ -32,7 +32,7 @@
 ## GitHub 설정
 
 - Description: `Redis Lua와 WebSocket으로 구현한 직접 체험 가능한 실시간 경매 시스템`
-- Website: `https://bid-on-performance-lab.pages.dev/`
+- Website: `https://bidon-performance.duckdns.org/`
 - Topics: `java`, `spring-boot`, `redis`, `lua`, `websocket`, `kafka`, `rabbitmq`, `postgresql`, `docker`, `vue`, `real-time`, `auction`, `concurrency`, `system-design`
 - Social Preview: 연결이 활성화된 최신 대표 화면 사용
 - 저장소 Visibility 확인
